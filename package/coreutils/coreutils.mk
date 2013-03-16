@@ -68,15 +68,26 @@ COREUTILS_POST_PATCH_HOOKS += COREUTILS_TOUCH_UNAME_C
 define COREUTILS_POST_INSTALL
 	# some things go in root rather than usr
 	for f in $(COREUTILS_BIN_PROGS); do \
-		mv $(TARGET_DIR)/usr/bin/$$f $(TARGET_DIR)/bin/$$f; \
+		if [ -f $(TARGET_DIR)/usr/bin/$$f ]; then \
+			mv  $(TARGET_DIR)/usr/bin/$$f $(TARGET_DIR)/bin/$$f; \
+		fi \
 	done
 	# link for archaic shells
-	ln -fs test $(TARGET_DIR)/usr/bin/[
+	if [ -f $(TARGET_DIR)/usr/bin/test ]; then \
+		ln -fs $(TARGET_DIR)/usr/bin/test $(TARGET_DIR)/usr/bin/[; \
+	fi
 	# gnu thinks chroot is in bin, debian thinks it's in sbin
-	mv $(TARGET_DIR)/usr/bin/chroot $(TARGET_DIR)/usr/sbin/chroot
+	if [ -f $(TARGET_DIR)/usr/bin/chroot ]; then \
+		mv $(TARGET_DIR)/usr/bin/chroot $(TARGET_DIR)/usr/sbin/chroot; \
+	fi
 endef
 
 COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_POST_INSTALL
+
+ifneq ($(BR2_PACKAGE_COREUTILS_BINS), "")
+COREUTILS_MAKE_OPT=OPTIONAL_BIN_PROGS=$(BR2_PACKAGE_COREUTILS_BINS)
+COREUTILS_INSTALL_TARGET_OPT=OPTIONAL_BIN_PROGS=$(BR2_PACKAGE_COREUTILS_BINS) DESTDIR=$(TARGET_DIR) install
+endif
 
 # If both coreutils and busybox are selected, the corresponding applets
 # may need to be reinstated by the clean targets.

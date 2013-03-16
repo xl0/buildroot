@@ -13,5 +13,12 @@ config BR2_PACKAGE_COREUTILS
 
 	  http://www.gnu.org/software/coreutils/
 
+config BR2_PACKAGE_COREUTILS_BINS
+	depends on BR2_PACKAGE_COREUTILS
+	string "Utils to install (None -> all)"
+	default ""
+	help
+	  Only install selected binaries.
+
 comment "coreutils requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
