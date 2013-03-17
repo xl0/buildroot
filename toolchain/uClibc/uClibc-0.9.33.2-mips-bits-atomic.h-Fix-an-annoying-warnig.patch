@@ -1,0 +1,43 @@
+From 40af3a8a787d15c4b4b246afed08e3bcf25fd5d2 Mon Sep 17 00:00:00 2001
+From: Alexey Zaytsev <alexey.zaytsev@gmail.com>
+Date: Wed, 13 Mar 2013 21:29:17 +0000
+Subject: [PATCH 1/2] mips/bits/atomic.h: Fix an annoying warnig
+
+---
+ libc/sysdeps/linux/mips/bits/atomic.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/libc/sysdeps/linux/mips/bits/atomic.h b/libc/sysdeps/linux/mips/bits/atomic.h
+index 3fab829..0109b11 100644
+--- a/libc/sysdeps/linux/mips/bits/atomic.h
++++ b/libc/sysdeps/linux/mips/bits/atomic.h
+@@ -136,22 +136,22 @@ typedef uintmax_t uatomic_max_t;
+ /* For all "bool" routines, we return FALSE if exchange succesful.  */
+ 
+ #define __arch_compare_and_exchange_bool_8_int(mem, new, old, rel, acq)	\
+-({ __typeof (*mem) __prev; int __cmp;					\
++({ __typeof (*mem) __prev __attribute__((unused)) ; int __cmp;					\
+    __arch_compare_and_exchange_xxx_8_int(mem, new, old, rel, acq);	\
+    !__cmp; })
+ 
+ #define __arch_compare_and_exchange_bool_16_int(mem, new, old, rel, acq) \
+-({ __typeof (*mem) __prev; int __cmp;					\
++({ __typeof (*mem) __prev __attribute__((unused)) ; int __cmp;					\
+    __arch_compare_and_exchange_xxx_16_int(mem, new, old, rel, acq);	\
+    !__cmp; })
+ 
+ #define __arch_compare_and_exchange_bool_32_int(mem, new, old, rel, acq) \
+-({ __typeof (*mem) __prev; int __cmp;					\
++({ __typeof (*mem) __prev __attribute__((unused)) ; int __cmp;					\
+    __arch_compare_and_exchange_xxx_32_int(mem, new, old, rel, acq);	\
+    !__cmp; })
+ 
+ #define __arch_compare_and_exchange_bool_64_int(mem, new, old, rel, acq) \
+-({ __typeof (*mem) __prev; int __cmp;					\
++({ __typeof (*mem) __prev __attribute__((unused)) ; int __cmp;					\
+    __arch_compare_and_exchange_xxx_64_int(mem, new, old, rel, acq);	\
+    !__cmp; })
+ 
+-- 
+1.7.10.4
+
