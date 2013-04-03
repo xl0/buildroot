@@ -17,23 +17,23 @@ fi
 
 INITFILES=`ls -1 /etc/init.d/S??* /etc/local/init.d/S??* 2>/dev/null | sed -e 's%\(.*\)/\([^/]*\)$%\2 \1/\2%' | sort -k 1 $SORTARG |cut -d ' ' -f 2`
 
-for i in $INITFILES ; do
+for INITFILE in $INITFILES ; do
 
      # Ignore dangling symlinks (if any).
-     [ ! -f "$i" ] && continue
+     [ ! -f "$INITFILE" ] && continue
 
-     case "$i" in
+     case "$INITFILE" in
 	*.sh)
 	    # Source shell script for speed.
 	    (
 		trap - INT QUIT TSTP
 		set $ACTION
-		. $i
+		. $INITFILE
 	    )
 	    ;;
 	*)
 	    # No sh extension, so fork subprocess.
-	    $i $ACTION
+	    $INITFILE $ACTION
 	    ;;
     esac
 done
