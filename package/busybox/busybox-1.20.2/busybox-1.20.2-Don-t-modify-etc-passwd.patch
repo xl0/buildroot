@@ -1,0 +1,26 @@
+From 8c65764296d0fd2dd5750f6f446fe6f5bfc95743 Mon Sep 17 00:00:00 2001
+From: Alexey Zaytsev <alexey.zaytsev@gmail.com>
+Date: Thu, 4 Apr 2013 00:40:26 +0000
+Subject: [PATCH] Don't modify /etc/passwd
+
+---
+ loginutils/passwd.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/loginutils/passwd.c b/loginutils/passwd.c
+index a7006f0..6f5fff4 100644
+--- a/loginutils/passwd.c
++++ b/loginutils/passwd.c
+@@ -206,7 +206,9 @@ int passwd_main(int argc UNUSED_PARAM, char **argv)
+ #endif
+ 	{
+ 		filename = bb_path_passwd_file;
++#if 0
+ 		rc = update_passwd(bb_path_passwd_file, name, newp, NULL);
++#endif
+ 	}
+ 	/* LOGMODE_BOTH */
+ 	if (rc < 0)
+-- 
+1.7.10.4
+
